@@ -4,19 +4,25 @@ protocol AnyErrorProtocol:LocalizedError {
 }
 public
 struct AnyError<E:Error>:AnyErrorProtocol {
-    public init(_ _error: E? = nil) {
+    public init(_ _error: E?) {
         self._error = _error
         self._message = nil
-    }
-    public init(_ _message:String) {
-        self._error = nil
-        self._message = _message
     }
     
     var _error:E?
     var _message:String?
     var localizedDescription: String {
         (_error?.localizedDescription ?? _message) ?? "未知的錯誤"
+    }
+}
+extension AnyError where E == Error {
+    public init(message:String) {
+        self._error = nil
+        self._message = message
+    }
+    public init() {
+        self._error = nil
+        self._message = nil
     }
 }
 
